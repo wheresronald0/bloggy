@@ -8,7 +8,16 @@ const reducer = (state, action) => {
   //action(type/post: add || delete, payload: 'the title + 1' )
   switch (action.type) {
     case "add_blogpost":
-      return [...state, { title: `The is Blog Post #${state.length + 1}` }];
+      return [
+        ...state,
+        {
+          id: Math.floor(Math.random() * 999999),
+          title: `Blog Post #${state.length + 1}`,
+        },
+      ];
+    case "delete_blogpost":
+      //console.log(state);
+      return state.filter((state) => state.id !== action.payload);
     case "default":
       return state;
   }
@@ -21,8 +30,18 @@ export const BlogProvider = ({ children }) => {
     dispatch({ type: "add_blogpost" });
   };
 
+  const deleteBlogPost = (id) => {
+    dispatch({ type: "delete_blogpost", payload: id });
+  };
+
   return (
-    <BlogContext.Provider value={{ data: blogPosts, addBlogPost: addBlogPost }}>
+    <BlogContext.Provider
+      value={{
+        state: blogPosts,
+        addBlogPost: addBlogPost,
+        deleteBlogPost: deleteBlogPost,
+      }}
+    >
       {children}
     </BlogContext.Provider>
   );
