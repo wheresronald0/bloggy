@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import BlogContext from "../context/BlogContext";
 import { Feather } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
 
 //deconstructs and gives access to state and setState fuction that was passed down
 const IndexScreen = (props) => {
@@ -22,23 +23,29 @@ const IndexScreen = (props) => {
       <View>
         <FlatList
           data={state}
-          keyExtractor={(id) => {
-            state.id;
+          keyExtractor={(blogPost) => {
+            blogPost.title;
           }}
           renderItem={({ item }) => {
             return (
-              <View style={styles.container}>
-                <Text style={styles.title}>
-                  This is {item.title} - {item.id}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    deleteBlogPost(item.id);
-                  }}
-                >
-                  <Feather name="trash" style={styles.icon} />
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  props.navigation.navigate("Show", { id: item.id })
+                }
+              >
+                <View style={styles.container}>
+                  <Text style={styles.title}>
+                    This is {item.title} - {item.id}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      deleteBlogPost(item.id);
+                    }}
+                  >
+                    <Feather name="trash" style={styles.icon} />
+                  </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             );
           }}
         />
