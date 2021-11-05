@@ -13,13 +13,23 @@ import { Feather } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 
 //deconstructs and gives access to state and setState fuction that was passed down
-const IndexScreen = (props) => {
+const IndexScreen = ({ navigation }) => {
   const { state, addBlogPost, deleteBlogPost } = useContext(BlogContext);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("Create")}>
+          <Feather name="plus" style={styles.icon} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View>
       <TextInput />
-      <Button title="Add Blog Post" onPress={addBlogPost} />
+
       <View>
         <FlatList
           data={state}
@@ -29,9 +39,7 @@ const IndexScreen = (props) => {
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
-                onPress={() =>
-                  props.navigation.navigate("Show", { id: item.id })
-                }
+                onPress={() => navigation.navigate("Show", { id: item.id })}
               >
                 <View style={styles.container}>
                   <Text style={styles.title}>
