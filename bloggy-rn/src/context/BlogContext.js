@@ -5,17 +5,22 @@ const BlogContext = React.createContext();
 //reducer
 const reducer = (state, action) => {
   //state === { title: 'string'}
-  //action(type/post: add || delete, payload: 'the title + 1' )
+  //action(type/post: add || update || delete)
   switch (action.type) {
     case "add_blogpost":
       return [
         ...state,
         {
           id: Math.floor(Math.random() * 999999),
-          title: `Blog Post #${action.payload.title}`,
+          title: action.payload.title,
           content: action.payload.content,
         },
       ];
+    case "update_blogpost":
+      return state.map((post) => {
+        return post.id === action.payload.id ? action.payload : post;
+      });
+
     case "delete_blogpost":
       //console.log(state);
       return state.filter((state) => state.id !== action.payload);
@@ -27,6 +32,7 @@ const reducer = (state, action) => {
 export const BlogProvider = ({ children }) => {
   const [blogPosts, dispatch] = useReducer(reducer, []);
 
+  //add
   const addBlogPost = (title, content) => {
     dispatch({
       type: "add_blogpost",
@@ -34,6 +40,16 @@ export const BlogProvider = ({ children }) => {
     });
   };
 
+  //update
+  const updateBlogPost = (id, title, content) => {
+    console.log(id, title, content);
+    dispatch({
+      type: "update_blogpost",
+      payload: { id: id, title: title, content: content },
+    });
+  };
+
+  //delete
   const deleteBlogPost = (id) => {
     dispatch({ type: "delete_blogpost", payload: id });
   };
@@ -43,6 +59,7 @@ export const BlogProvider = ({ children }) => {
       value={{
         state: blogPosts,
         addBlogPost: addBlogPost,
+        updateBlogPost: updateBlogPost,
         deleteBlogPost: deleteBlogPost,
       }}
     >

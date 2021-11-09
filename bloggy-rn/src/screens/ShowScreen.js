@@ -1,13 +1,24 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import BlogContext from "../context/BlogContext";
 
-const ShowScreen = ({ route }) => {
+const ShowScreen = ({ route, navigation }) => {
   const { state } = useContext(BlogContext);
   const { id } = route.params;
   const thisBlogPost = state.find((item) => item.id === id);
-  console.log(thisBlogPost);
-  console.log(id);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Edit", { id: thisBlogPost.id })}
+        >
+          <Feather name="edit-2" style={styles.icon} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View>
@@ -18,6 +29,11 @@ const ShowScreen = ({ route }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  icon: {
+    fontSize: 25,
+    color: "white",
+  },
+});
 
 export default ShowScreen;

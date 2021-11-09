@@ -42,9 +42,7 @@ const IndexScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate("Show", { id: item.id })}
               >
                 <View style={styles.container}>
-                  <Text style={styles.title}>
-                    This is {item.title} - {item.id}
-                  </Text>
+                  <Text style={styles.title}> Blog Post: {item.title}</Text>
                   <TouchableOpacity
                     onPress={() => {
                       deleteBlogPost(item.id);
@@ -65,8 +63,8 @@ const IndexScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    paddingVertical: 10,
+    justifyContent: "space-between",
+    padding: 20,
     borderBottomWidth: 1,
     borderColor: "gray",
   },
