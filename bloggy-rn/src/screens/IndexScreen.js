@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,7 +14,18 @@ import { NavigationContainer } from "@react-navigation/native";
 
 //deconstructs and gives access to state and setState fuction that was passed down
 const IndexScreen = ({ navigation }) => {
-  const { state, addBlogPost, deleteBlogPost } = useContext(BlogContext);
+  const { state, addBlogPost, deleteBlogPost, getBlogPosts } =
+    useContext(BlogContext);
+
+  useEffect(() => {
+    //to aviod infinite loop
+    getBlogPosts();
+    console.log("made the call");
+    //second fetch
+    navigation.addListener("did focus", () => {
+      getBlogPosts;
+    });
+  }, []);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

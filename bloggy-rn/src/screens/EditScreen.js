@@ -13,7 +13,7 @@ const EditScreen = ({ route, navigation }) => {
   const [content, setContent] = useState(thisBlogPost.content);
 
   //console.log(title);
-  //console.log(content);
+  //iconsole.log(content);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Edit Title {id}</Text>
@@ -32,7 +32,7 @@ const EditScreen = ({ route, navigation }) => {
         title="Update"
         onPress={() => {
           //console.log(id, title, content);
-          updateBlogPost(id, title, content);
+          updateBlogPost(id, title, content, () => navigation.pop());
           //navigation.navigate("Home", { id: id });
         }}
       />
